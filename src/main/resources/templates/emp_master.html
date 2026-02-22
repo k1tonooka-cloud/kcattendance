@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleafe.org">
+<head>
+<meta charset="UTF-8">
+<title>京葉コミュニケーションズ勤怠管理システム</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="script/alert.js"></script>
+<script src="script/emp_master.js"></script>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body class="login" onload="updatealert()">
+<div th:replace="fragments/header :: header"></div>
+<HR>
+<form id="EmpMasterForm" th:action="@{/emp_master}" th:method="post" th:object="${empMasterForm}" target="_parent">
+	<div th:if="${#arrays.length(#fields.detailedErrors())} > 0">
+		<div th:each="error : ${#fields.detailedErrors()}">
+			<div class="error"><span th:text="${error.message}"/></div>
+		</div>
+	</div>
+</span>
+<DIV ALIGN=CENTER>
+<BR>
+	<label>抽出条件</label><br>
+	<label>氏名</label><input type="text" id="name">
+	<button type="submit" name="action" value="search">検索</button>
+<br>
+	<button type="submit" name="action" value="new">新規</button><br>
+	<label>検索結果</label><br>
+	<table width="50%" border="1">
+		<tr>
+			<td width="3%">
+				<label>編集</label>
+			</td>
+			<td width="10%">
+				<label>社員番号</label>
+			</td>
+			<td width="15%">
+				<label>氏名</label>
+			</td>
+			<td width="15%">
+				<label>メールアドレス</label>
+			</td>
+			<td width="10%">
+				<label>ステータス</label>
+			</td>
+			<td width="10%">
+				<label>所属</label>
+			</td>
+			<td width="10%">
+				<label>削除フラグ</label>
+			</td>
+		</tr>
+		<tr th:each="item, iter : *{empMasterItems}" th:with="readonly=${item.readOnly}">
+			<td>
+				<input type="checkbox" th:field="*{empMasterItems[__${iter.index}__].checkbox}" 
+				th:onchange="onCheck([[__${iter.index}__]]);"/>
+				<input type="hidden" th:field="*{empMasterItems[__${iter.index}__].newrec}"/>
+				<input type="hidden" th:field="*{empMasterItems[__${iter.index}__].readOnly}"/>
+			</td>
+			<td>
+				<div th:if="${item.newrec}">
+					<input type="text" th:field="*{empMasterItems[__${iter.index}__].EmployeeId}" size="3" maxlength="3"/>
+				</div>
+				<div th:if="!${item.newrec}">
+					<div th:text="${item.EmployeeId}"></div>
+					<input type="hidden" th:field="*{empMasterItems[__${iter.index}__].EmployeeId}"/>
+				</div>
+			</td>
+			<td>
+				<div th:if="${item.readOnly}" th:text="${item.EmployeeName}"></div>
+				<input type="hidden" th:if="${item.readOnly}" th:field="*{empMasterItems[__${iter.index}__].EmployeeName}"/>
+				<input type="text"  th:if="${!item.readOnly}" th:field="*{empMasterItems[__${iter.index}__].EmployeeName}">
+			</td>
+			<td>
+				<div th:if="${item.readOnly}" th:text="${item.MailAddr}"></div>
+				<input type="hidden" th:if="${item.readOnly}" th:field="*{empMasterItems[__${iter.index}__].MailAddr}"/>
+				<input type="text" th:if="${!item.readOnly}" th:field="*{empMasterItems[__${iter.index}__].MailAddr}"/>
+			</td>
+			<td>
+				<div th:if="${item.readOnly}" th:text="${item.StatusName}"></div>
+				<input type="hidden" th:if="${item.readOnly}" th:field="*{empMasterItems[__${iter.index}__].StatusName}"/>
+				<input type="hidden" th:if="${item.readOnly}" th:field="*{empMasterItems[__${iter.index}__].Status}"/>
+				<div th:if="${!item.readOnly}">
+					<select name="Status" th:field="*{empMasterItems[__${iter.index}__].Status}">
+						<option value="1">稼働中</option>
+						<option value="2">休業中</option>
+					</select>
+				</div>
+			</td>
+			<td>
+				<div th:if="${item.readOnly}" th:text="${item.AffiliationName}"></div>
+				<input type="hidden" th:if="${item.readOnly}" th:field="*{empMasterItems[__${iter.index}__].AffiliationName}"/>
+				<input type="hidden" th:if="${item.readOnly}" th:field="*{empMasterItems[__${iter.index}__].Affiliation}"/>
+				<div th:if="${!item.readOnly}">
+					<select name="Affiliation" th:field="*{empMasterItems[__${iter.index}__].Affiliation}">
+						<option value="1">開発部</option>
+						<option value="2">総務部</option>
+						<option value="3">業務部</option>
+					</select>
+				</div>
+			</td>
+			<td>
+				<input type="checkbox" th:field="*{empMasterItems[__${iter.index}__].deleteFlg}"/>
+			</td>
+		</tr>
+	</table>
+	<input type="hidden" id="msg" th:field="*{msg}" />
+	<input type="hidden" id="no" th:field="*{no}" />
+	<button type="submit" name="action" value="save">保存</button>
+	<button type="submit" name="action" value="dest">破棄</button>
+</body>
+</html>

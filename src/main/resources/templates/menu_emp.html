@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleafe.org">
+<head>
+<meta charset="UTF-8">
+<title>京葉コミュニケーションズ勤怠管理システム</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body class="login">
+<div th:replace="fragments/header :: header"></div>
+<HR>
+<form th:action="@{/login}" th:method="post" th:object="${menuForm}">
+	<div th:if="${#arrays.length(#fields.detailedErrors())} > 0">
+		<div th:each="error : ${#fields.detailedErrors()}">
+			<div class="error"><span th:text="${error.message}"/></div>
+		</div>
+	</div>
+</span>
+<DIV ALIGN=CENTER>
+<BR>
+	<span><a th:href="worktime" target="_parent">作業時間・経費入力</a></span><br>
+	<span><a th:href="set_pwd" target="_parent">パスワード変更</a></span><br>
+	<br>
+	<br>
+	<span th:if="${MenuForm.savePasswd}"><a th:href="cancel_auto" target="_parent">自動ログインを解除</a></span><br>
+</DIV>
+</form>
+</body>
+</html>

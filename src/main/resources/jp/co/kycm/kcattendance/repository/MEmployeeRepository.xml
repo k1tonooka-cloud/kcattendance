@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.kycm.kcattendance.repository.MEmployeeRepository">
+  <!-- 一覧検索 -->
+  <resultMap id="MEmployeeMap" type="jp.co.kycm.kcattendance.entity.MEmployee">
+  	<id property="employeeId" column="employee_id"/>
+  	<result property="employeeName" column="employee_name"/>
+  	<result property="mailAddr" column="mail_addr"/>
+  	<result property="password" column="password"/>
+  	<result property="status" column="status"/>
+  	<result property="affiliation" column="affiliation"/>
+  	<result property="deleteFlg" column="delete_flg"/>
+  	<result property="createDate" column="create_date"/>
+  	<result property="createUser" column="create_user"/>
+  	<result property="createPrg" column="create_prg"/>
+  	<result property="updateDate" column="update_date"/>
+  	<result property="updateUser" column="update_user"/>
+  	<result property="updatePrg" column="update_prg"/>
+  </resultMap>
+  <select id="selectListAll" resultType="jp.co.kycm.kcattendance.entity.MEmployee">
+       select 
+         employee_id
+		,employee_name
+		,mail_addr
+		,password
+		,status
+		,affiliation
+		,delete_flg
+		,create_date
+		,create_user
+		,create_prg
+		,update_date
+		,update_user
+		,update_prg
+       from 
+       	m_employee 
+       order by employee_id
+  </select>
+  <!-- ログインチェック用検索 -->
+  <select id="select01" resultType="jp.co.kycm.kcattendance.entity.MEmployee">
+       select 
+         employee_id
+		,employee_name
+		,mail_addr
+		,password
+		,status
+		,affiliation
+		,delete_flg
+		,create_date
+		,create_user
+		,create_prg
+		,update_date
+		,update_user
+		,update_prg
+       from 
+       	m_employee 
+       where
+            mail_addr = #{mail_addr}
+        and password = #{password}
+        and delete_flg = '0'
+  </select>
+  <!-- 社員マスタメンテナンス検索 -->
+  <select id="select02" resultType="jp.co.kycm.kcattendance.entity.MEmployee">
+       select 
+         employee_id
+		,employee_name
+		,mail_addr
+		,password
+		,status
+		,affiliation
+		,delete_flg
+		,create_date
+		,create_user
+		,create_prg
+		,update_date
+		,update_user
+		,update_prg
+       from 
+       	m_employee 
+       where
+        delete_flg = '0'
+       order by employee_id
+  </select>
+  <!-- 一覧検索 -->
+  <resultMap id="ConfNotenterResultMap" type="jp.co.kycm.kcattendance.entity.ConfNotenter">
+  	<id property="employeeId" column="employee_id"/>
+  	<result property="employeeName" column="employee_name"/>
+  	<result property="worktime" column="worktime"/>
+  	<result property="workscheduleFlg" column="workschedule_flg"/>
+  	<result property="workschedule" column="workschedule"/>
+  	<result property="status" column="status"/>
+  	<result property="costSum" column="cost_sum"/>
+  </resultMap>
+  <select id="select03" resultType="jp.co.kycm.kcattendance.entity.ConfNotenter">
+ 	 SELECT 
+	     a.employee_id,
+	     MAX(a.employee_name) AS employee_name,
+	     MAX(b.worktime) AS worktime,
+	     MAX(b.workschedule_flg) AS workschedule_flg,
+	     MAX(b.workschedule) AS workschedule,
+	     MAX(b.status) AS status,
+	     SUM(c.cost) AS cost_sum
+	FROM 
+	    m_employee a
+	LEFT OUTER JOIN t_worktime b
+	    ON a.employee_id = b.employee_id
+	    and b.year = #{year}
+	    AND b.month = #{month}
+	LEFT OUTER JOIN t_cost c
+	    ON a.employee_id = c.employee_id
+	    AND c.year = #{year}
+	    AND c.month = #{month}
+<if test="extraction==1">
+	WHERE ( b.status='0' OR b.status is null )
+</if>
+<if test="extraction==2">
+	WHERE b.status='1'
+</if>
+	GROUP BY 
+    a.employee_id
+<if test="orderby==0">
+		order by a.employee_id
+</if>
+<if test="orderby==1">
+		order by MAX(a.employee_name)
+</if>
+  </select>
+  <select id="select04" resultType="jp.co.kycm.kcattendance.entity.ConfNotenter">
+ 	 SELECT 
+	     a.employee_name
+	FROM 
+	    m_employee a
+	LEFT OUTER JOIN t_worktime b
+	    ON a.employee_id = b.employee_id
+	    and b.year = #{year}
+	    and b.month = #{month}
+	WHERE a.affiliation = '1'
+	 and  a.delete_flg = '0'
+	 and  a.status = '1'
+	 and b.employee_id is null;
+  </select>
+  <!-- パスワード変更 -->
+  <update id="update01">
+  	UPDATE
+  		m_employee
+  	SET
+  		password = #{passwd},
+  		update_date = now(),
+  		update_prg = 'set_pwd'
+  		
+  	where
+  		employee_id = #{employee_id}
+  	and delete_flg = '0'
+  </update>
+  <!-- 挿入 -->
+  <insert id="insert01">
+  	insert into 
+  		m_employee
+  	(
+         employee_id
+		,employee_name
+		,mail_addr
+		,password
+		,status
+		,affiliation
+		,delete_flg
+		,create_date
+		,create_user
+		,create_prg
+		,update_date
+		,update_user
+		,update_prg
+  	) values (
+         #{MEmployee.employeeId}
+		,#{MEmployee.employeeName}
+		,#{MEmployee.mailAddr}
+		,#{MEmployee.password}
+		,#{MEmployee.status}
+		,#{MEmployee.affiliation}
+		,#{MEmployee.deleteFlg}
+		,#{MEmployee.createDate}
+		,#{MEmployee.createUser}
+		,#{MEmployee.createPrg}
+		,#{MEmployee.updateDate}
+		,#{MEmployee.updateUser}
+		,#{MEmployee.updatePrg}
+  	)
+  </insert>
+  <!-- 更新 -->
+  <update id="update02">
+  	update 
+  		m_employee
+  	set
+  		employee_name = #{MEmployee.employeeName},
+  		mail_addr = #{MEmployee.mailAddr},
+  		status = #{MEmployee.status},
+  		affiliation = #{MEmployee.affiliation},
+  		delete_flg = #{MEmployee.deleteFlg},
+  		update_date = #{MEmployee.updateDate},
+  		update_user = #{MEmployee.updateUser},
+  		update_prg = #{MEmployee.updatePrg}
+  	where
+  		employee_id = #{MEmployee.employeeId}
+  </update>
+</mapper>

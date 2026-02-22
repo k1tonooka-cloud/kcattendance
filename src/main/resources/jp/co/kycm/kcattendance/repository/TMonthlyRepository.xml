@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.kycm.kcattendance.repository.TMonthlyRepository">
+  <!-- 一覧検索 -->
+  <resultMap id="TMonthlyResultMap" type="jp.co.kycm.kcattendance.entity.TMonthly">
+  	<result property="year" column="year"/>
+  	<result property="month" column="month"/>
+  	<result property="status" column="status"/>
+  	<result property="createDate" column="create_date"/>
+  	<result property="createUser" column="create_user"/>
+  	<result property="createPrg" column="create_prg"/>
+  	<result property="updateDate" column="update_date"/>
+  	<result property="updateUser" column="update_user"/>
+  	<result property="updatePrg" column="update_prg"/>
+  </resultMap>
+  <select id="selectListAll" resultType="jp.co.kycm.kcattendance.entity.TMonthly">
+       select 
+		 year
+		,month
+		,status
+		,create_date
+		,create_user
+		,create_prg
+		,update_date
+		,update_user
+		,update_prg
+       from 
+       	t_monthly 
+       order by employee_id
+  </select>
+  <select id="select01" resultType="jp.co.kycm.kcattendance.entity.TMonthly">
+       select 
+		 year
+		,month
+		,status
+		,create_date
+		,create_user
+		,create_prg
+		,update_date
+		,update_user
+		,update_prg
+       from 
+       	t_monthly 
+       where
+            status = #{status}
+  </select>
+  <insert id="insert01">
+  	insert into 
+  		t_monthly
+  	(
+  		 year
+		,month
+		,status
+		,create_date
+		,create_user
+		,create_prg
+		,update_date
+		,update_user
+		,update_prg
+  	) values (
+		 #{TMonthly.year}
+		,#{TMonthly.month}
+		,#{TMonthly.status}
+		,#{TMonthly.createDate}
+		,#{TMonthly.createUser}
+		,#{TMonthly.createPrg}
+		,#{TMonthly.updateDate}
+		,#{TMonthly.updateUser}
+		,#{TMonthly.updatePrg}
+  	)
+  </insert>
+  <update id="update01">
+  	update
+  		t_monthly
+  	set
+		 status = #{TMonthly.status}
+		,update_date = #{TMonthly.updateDate}
+		,update_user = #{TMonthly.updateUser}
+		,update_prg = #{TMonthly.updatePrg}
+	where
+		year = #{TMonthly.year}
+	and	month = #{TMonthly.month}
+  </update>
+</mapper>

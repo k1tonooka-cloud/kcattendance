@@ -1,0 +1,10 @@
+<div th:fragment="breadcrumb(breadcrumbs)">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <span th:each="crumb, iterStat : ${breadcrumbs}" class="breadcrumb-item">
+                <a th:if="${!iterStat.last}" th:href="${crumb[0]}" th:text="${crumb[1]}+'>'"></a>
+                <span th:if="${iterStat.last}" th:text="${crumb[1]}+'>'"></span>
+            </span>
+        </ul>
+    </nav>
+</div>

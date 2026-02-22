@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script th:src="@{/script/alert.js}"></script>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body class="login" onload="showalert()">
+<div th:replace="fragments/header :: header"></div>
+<HR>
+<form  th:action="@{/monthly}" th:method="post" th:object="${monthlyForm}" target="_parent">
+	<div th:if="${#arrays.length(#fields.detailedErrors())} > 0">
+		<div th:each="error : ${#fields.detailedErrors()}">
+			<div class="error"><span th:text="${error.message}"/></div>
+		</div>
+	</div>
+</span>
+<DIV ALIGN=CENTER>
+<BR>
+	<label>月次対象月</label><label><span th:text="${MonthlyForm.year1}"></span>年 <span th:text="${MonthlyForm.month1}"></span>月</label><br>
+<BR>
+	<label>月次後年月</label><label><span th:text="${MonthlyForm.year2}"></span>年 <span th:text="${MonthlyForm.month2}"></span>月</label><br>
+	<input type="hidden" id="year1" th:field="*{year1}" />
+	<input type="hidden" id="month1" th:field="*{month1}" />
+	<input type="hidden" id="year2" th:field="*{year2}" />
+	<input type="hidden" id="month2" th:field="*{month2}" />
+
+
+
+	<input type="hidden" id="msg" th:field="*{msg}" />
+	<button type="submit" name="action" value="monthly">月次</button>
+</body>
+</html>

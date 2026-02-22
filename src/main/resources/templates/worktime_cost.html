@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleafe.org">
+<head>
+<meta charset="UTF-8">
+<title>京葉コミュニケーションズ勤怠管理システム</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body class="login">
+<div th:replace="fragments/header :: header"></div>
+<HR>
+<form  th:action="@{/worktime_cost}" th:method="post" th:object="${worktimeCostForm}" target="_parent">
+	<div th:if="${#arrays.length(#fields.detailedErrors())} > 0">
+		<div th:each="error : ${#fields.detailedErrors()}">
+			<div class="error"><span th:text="${error.message}"/></div>
+		</div>
+	</div>
+</span>
+<DIV ALIGN=CENTER>
+<BR>
+	<input type="text" th:field="*{year}" size="4" maxlength="4"></input><label>年 </label>
+	<input type="text" th:field="*{month}" size="2" maxlength="2"></input><label>月</label>
+	<button type="submit" name="action" value="search">検索</button>
+	<br>
+	<br>
+	<table width="80%" border="1">
+		<tr>
+			<td th:each="item, iter : *{WorktimeCostItems}">
+				<span th:text="*{WorktimeCostItems[__${iter.index}__].employeeName}"></span>
+			</td>
+		</tr>
+		<tr>
+			<td th:each="item, iter : *{WorktimeCostItems}">
+				<span th:text="*{WorktimeCostItems[__${iter.index}__].worktime}"></span>
+			</td>
+		</tr>
+		<tr>
+			<td th:each="item, iter : *{WorktimeCostItems}">
+				<span th:text="*{WorktimeCostItems[__${iter.index}__].cost}"></span>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

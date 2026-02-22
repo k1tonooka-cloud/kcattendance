@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+body.login {
+	font-family: BIZ UDPゴシック;
+	background-color: #98fb98;
+	text-align: center;
+}
+
+body.index {
+	font-family: BIZ UDPゴシック;
+	background-color: #00ffff;
+	text-align: center;
+}
+
+body.body {
+	font-family: BIZ UDPゴシック;
+	background-color: #00ffff;
+	text-align: left;
+}
+
+body.selectpage {
+	font-family: BIZ UDPゴシック;
+	background-color: #80ff00;
+	text-align: left;
+}
+
+h1 {
+	font-size: 32px;
+	color: green;
+}
+
+h2 {
+	font-size: 28px;
+	background-color:  green;
+	color: white;
+}
+
+div.error {
+	color: #ff0000;
+}

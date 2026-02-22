@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.kycm.kcattendance.repository.TWorktimeRepository">
+  <!-- 一覧検索 -->
+  <resultMap id="UserTblResultMap" type="jp.co.kycm.kcattendance.entity.TWorktime">
+  	<result property="year" column="year"/>
+  	<result property="month" column="month"/>
+  	<result property="employeeId" column="employee_id"/>
+  	<result property="worktime" column="worktime"/>
+  	<result property="workscheduleFlg" column="workschedule_flg"/>
+  	<result property="fileName" column="file_name"/>
+  	<result property="mineType" column="mine_type"/>
+  	<result property="workschedule" column="workschedule"/>
+  	<result property="status" column="status"/>
+  	<result property="createDate" column="create_date"/>
+  	<result property="createUser" column="create_user"/>
+  	<result property="createPrg" column="create_prg"/>
+  	<result property="updateDate" column="update_date"/>
+  	<result property="updateUser" column="update_user"/>
+  	<result property="updatePrg" column="update_prg"/>
+  </resultMap>
+  <select id="selectListAll" resultType="jp.co.kycm.kcattendance.entity.TWorktime">
+       select 
+			 year
+			,month
+			,employee_id
+			,worktime
+			,workschedule_flg
+			,file_name
+			,mine_type
+			,workschedule
+			,status
+			,create_date
+			,create_user
+			,create_prg
+			,update_date
+			,update_user
+			,update_prg
+       from 
+       	t_worktime 
+       order by employee_id
+  </select>
+  <!-- 作業時間入力 -->
+  <select id="select01" resultType="jp.co.kycm.kcattendance.entity.TWorktime">
+       select 
+			 year
+			,month
+			,employee_id
+			,worktime
+			,workschedule_flg
+			,file_name
+			,mine_type
+			,workschedule
+			,status
+			,create_date
+			,create_user
+			,create_prg
+			,update_date
+			,update_user
+			,update_prg
+       from 
+       	t_worktime 
+       where
+            year = #{year}
+            and month = #{month}
+            and employee_id = #{employee_id}
+  </select>
+  <!-- 作業時間更新 -->
+  <update id="update01">
+  		update 
+  			t_worktime 
+  		set
+  			worktime = #{worktime.worktime},
+  			workschedule_flg = #{worktime.workscheduleFlg},
+  			workschedule = #{worktime.workschedule},
+			file_name = #{worktime.fileName},
+			mine_type = #{worktime.mineType},
+  			status = #{worktime.status},
+		  	update_date = #{worktime.updateDate},
+		  	update_user = #{worktime.updateUser},
+  			update_prg = #{worktime.updatePrg}
+  		where
+  			year = #{worktime.year}
+  		and	month = #{worktime.month}
+  		and	employee_id = #{worktime.employeeId}
+  </update>
+  <!-- 作業時間作成 -->
+  <insert id="insert01">
+  		insert into t_worktime (
+			 year
+			,month
+			,employee_id
+			,worktime
+			,workschedule_flg
+			,file_name
+			,mine_type
+			,workschedule
+			,status
+			,create_date
+			,create_user
+			,create_prg
+			,update_date
+			,update_user
+			,update_prg
+		) values (
+			 #{worktime.year}
+			,#{worktime.month}
+			,#{worktime.employeeId}
+			,#{worktime.worktime}
+			,#{worktime.workscheduleFlg}
+			,#{worktime.fileName}
+			,#{worktime.mineType}
+			,#{worktime.workschedule}
+			,#{worktime.status}
+			,#{worktime.createDate}
+			,#{worktime.createUser}
+			,#{worktime.createPrg}
+			,#{worktime.updateDate}
+			,#{worktime.updateUser}
+			,#{worktime.updatePrg}
+		)
+  			
+  </insert>
+</mapper>

@@ -1,0 +1,16 @@
+<!-- fragments/header.html -->
+<header th:fragment="header">
+	<h2>京葉コミュニケーションズ勤怠管理システム</h2>
+	<table width="100%" border="0">
+		<tr>
+			<td  ALIGN="left">
+				<div th:replace="fragments/breadcrumb :: breadcrumb(${breadcrumbs})"></div>
+			</td>
+			<td  ALIGN="right">
+				<form method="post" action="/logout" target="_parent">
+					<span th:text="${MenuForm.employeeName}"></span><button type="submit" value="logout">ログアウト</button>
+				</form>
+			</td>
+		</tr>
+	</table>
+</header>

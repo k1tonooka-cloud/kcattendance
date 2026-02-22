@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleafe.org">
+<head>
+<meta charset="UTF-8">
+<title>京葉コミュニケーションズ勤怠管理システム</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script th:src="@{/script/alert.js}"></script>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body class="login" onload="showalert()">
+<div th:replace="fragments/header :: header"></div>
+<HR>
+</P>
+
+<form  th:action="@{/set_pwd}" th:method="post" th:object="${SetPwdForm}">
+	<div th:if="${#arrays.length(#fields.detailedErrors())} > 0">
+		<div th:each="error : ${#fields.detailedErrors()}">
+			<div class="error"><span th:text="${error.message}"></span></div>
+		</div>
+	</div>
+</span>
+<DIV ALIGN=CENTER>
+<BR>
+<table border="0">
+	<tr>
+		<td>
+			<span>メールアドレス</span>
+		</td>
+		<td>
+			<span th:text="${SetPwdForm.mailaddr}"></span>
+			<input type="hidden" th:field="${SetPwdForm.mailaddr}">
+			<input type="hidden" th:field="${SetPwdForm.passwd}">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<span>旧パスワード</span>			
+		</td>
+		<td>
+			<span><input th:field="*{oldpasswd}" type="password" name="oldpasswd" maxlength="100"></span>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<span>新パスワード１</span>			
+		</td>
+		<td>
+			<span><input th:field="*{newpasswd1}" type="password" name="newpasswd1" maxlength="100"></span>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<span>新パスワード２</span>			
+		</td>
+		<td>
+			<span><input th:field="*{newpasswd2}" type="password" name="newpasswd2" maxlength="100"></span>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<label>新パスワード１と新パスワード２は同じものを入力して下さい</label>
+		</td>
+	</tr>
+</table>
+<BR>
+	<input type="hidden" id="msg" th:field="*{msg}" />
+	<button type="submit" name="action" value="change">変更</button>
+	<button type="reset" name="action" value="clear">クリア</button>
+	<BR>
+<BR>
+</DIV>
+</form>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.kycm.kcattendance.repository.TCostRepository">
+  <!-- 一覧検索 -->
+  <resultMap id="TCostResultMap" type="jp.co.kycm.kcattendance.entity.TCost">
+  	<result property="year" column="year"/>
+  	<result property="month" column="month"/>
+  	<result property="employeeId" column="employee_id"/>
+  	<result property="lineNo" column="line_no"/>
+  	<result property="cost" column="cost"/>
+  	<result property="comment" column="comment"/>
+  	<result property="status" column="status"/>
+  	<result property="createDate" column="create_date"/>
+  	<result property="createUser" column="create_user"/>
+  	<result property="createPrg" column="create_prg"/>
+  	<result property="updateDate" column="update_date"/>
+  	<result property="updateUser" column="update_user"/>
+  	<result property="updatePrg" column="update_prg"/>
+  </resultMap>
+  <select id="selectListAll" resultType="jp.co.kycm.kcattendance.entity.TCost">
+       select 
+       		 year
+			,month
+			,employee_id
+			,line_no
+			,cost
+			,comment
+			,status
+			,create_date
+			,create_user
+			,create_prg
+			,update_date
+			,update_user
+			,update_prg
+       from 
+       		t_cost 
+       order by year, month, employee_id,line_no
+  </select>
+  <select id="select01" resultType="jp.co.kycm.kcattendance.entity.TCost">
+       select 
+       		 year
+			,month
+			,employee_id
+			,line_no
+			,cost
+			,comment
+			,status
+			,create_date
+			,create_user
+			,create_prg
+			,update_date
+			,update_user
+			,update_prg
+       from 
+       		t_cost 
+       where
+            year = #{year}
+        and month = #{month}
+        and employee_id = #{employee_id}
+       order by line_no
+  </select>
+  <select id="select02" resultType="java.math.BigDecimal">
+       select 
+			sum(cost) as cost
+       from 
+       		t_cost 
+       where
+            year = #{year}
+        and month = #{month}
+        and employee_id = #{employee_id}
+  </select>
+  <insert id="insert01">
+  		INSERT INTO 
+  			t_cost
+  		(
+       		 year
+			,month
+			,employee_id
+			,line_no
+			,cost
+			,comment
+			,status
+			,create_date
+			,create_user
+			,create_prg
+			,update_date
+			,update_user
+			,update_prg
+  		) VALUES (
+       		 #{cost.year}
+			,#{cost.month}
+			,#{cost.employeeId}
+			,#{cost.lineNo}
+			,#{cost.cost}
+			,#{cost.comment}
+			,#{cost.status}
+			,#{cost.createDate}
+			,#{cost.createUser}
+			,#{cost.createPrg}
+			,#{cost.updateDate}
+			,#{cost.updateUser}
+			,#{cost.updatePrg}
+  		)
+  </insert>
+  <delete id="delete01">
+  		DELETE
+  		FROM
+  			t_cost
+		WHERE 
+			year = #{year}
+			and month = #{month}
+			and employee_id = #{employee_id}
+  </delete>
+</mapper>

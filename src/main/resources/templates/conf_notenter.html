@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleafe.org">
+<head>
+<meta charset="UTF-8">
+<title>京葉コミュニケーションズ勤怠管理システム</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body class="login">
+<div th:replace="fragments/header :: header"></div>
+<HR>
+<form  th:action="@{/conf_notenter}" th:method="post" th:object="${confNotenterForm}" target="_parent">
+	<div th:if="${#arrays.length(#fields.detailedErrors())} > 0">
+		<div th:each="error : ${#fields.detailedErrors()}">
+			<div class="error"><span th:text="${error.message}"/></div>
+		</div>
+	</div>
+</span>
+<DIV ALIGN=CENTER>
+<BR>
+	<label><span th:text="${MenuForm.year}"></span>年 <span th:text="${MenuForm.month}"></span>月</label><br>
+	<label>抽出条件</label>
+	<select name="extraction" th:field="*{extraction}">
+		<option value="0">全部</option>
+		<option value="1">未</option>
+		<option value="2">済</option>
+	</select>
+	<label>ソート順</label>
+	<select name="orderby" th:field="*{orderby}">
+		<option value="0">社員番号順</option>
+		<option value="1">氏名順</option>
+	</select>
+	<button type="submit" name="action" value="search">検索</button>
+	<br>
+	<br>
+	<table width="80%" border="1">
+		<tr>
+			<td width="10%">
+				<label>社員番号</label>
+			</td>
+			<td width="20%">
+				<label>氏名</label>
+			</td>
+			<td  width="20%">
+				<label>作業時間</label>
+			</td>
+			<td width="20%">
+				<label>勤務表添付</label>
+			</td>
+			<td width="20%">
+				<label>経費計算</label>
+			</td>
+			<td width="20%">
+				<label>送信済</label>
+			</td>
+		</tr>
+		<tr th:each="item, iter : *{ConfNotenterItems}">
+			<td>
+				<span th:text="*{ConfNotenterItems[__${iter.index}__].employeeId}"></span>
+			</td>
+			<td>
+				<a th:href="@{/worktime2(id=${item.employeeId})}">
+					<span th:text="*{ConfNotenterItems[__${iter.index}__].employeeName}"></span>
+				</a>
+			</td>
+			<td>
+				<span th:text="*{ConfNotenterItems[__${iter.index}__].worktime}"></span>
+			</td>
+			<td>
+				<div th:if="${item.workscheduleFlg == '1'}">
+					<span><a th:href="@{'/download?year='+${MenuForm.year}+'&month='+${MenuForm.month}+'&id='+${item.employeeId}}">あり</a></span>
+				</div>
+			</td>
+			<td>
+				<span th:text="*{ConfNotenterItems[__${iter.index}__].cost}"></span>
+			</td>
+			<td>
+				<span th:text="*{ConfNotenterItems[__${iter.index}__].send}"></span>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

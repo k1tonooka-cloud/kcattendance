@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleafe.org">
+<head>
+<meta charset="UTF-8">
+<title>京葉コミュニケーションズ勤怠管理システム</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="script/alert.js"></script>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body class="login" onload="showalert()">
+<div th:replace="fragments/header :: header"></div>
+<HR>
+<form  th:action="@{/worktime}" th:method="post" th:object="${workTimeForm}" target="_parent" enctype="multipart/form-data">
+	<div th:if="${#arrays.length(#fields.detailedErrors())} > 0">
+		<div th:each="error : ${#fields.detailedErrors()}">
+			<div class="error"><span th:text="${error.message}"></span></div>
+		</div>
+	</div>
+<DIV ALIGN=CENTER>
+<BR>
+	<label><span th:text="${WorkTimeForm.year}"></span>年 <span th:text="${WorkTimeForm.month}"></span>月　　<span th:text="${WorkTimeForm.employeeName}"></label><br>
+	<label>作業時間(h)</label>
+	<span th:if="${WorkTimeForm.readonly != '1'}">
+		<input type="text" id="worktime" th:field="${WorkTimeForm.worktime}"/>
+	</span>
+	<span th:if="${WorkTimeForm.readonly == '1'}" th:text="${WorkTimeForm.worktime}"></span>
+	<br>
+	<br>
+	<table  width="80%" border="1">
+		<tr>
+			<td>
+				<span>勤務表アップロード</span><br>
+				<div th:if="${WorkTimeForm.readonly != '1'}">
+					<INPUT type="file" th:field="*{file}" size="50">
+					<button type="submit" name="action" value="upload">アップロード</button>
+					<span th:if="${WorkTimeForm.data == null}" th:text="未アップロード"></span>
+				</div>
+				<div th:if="${WorkTimeForm.workscheduleFlg == '1'}">
+					<span th:text="アップロード済"></span>
+					<a th:href="@{/download2}">ダウンロード</a>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<br>
+	<table with="80%" border="0">
+		<tr>
+			<td ALIGN="right">
+				<span th:if="${WorkTimeForm.readonly != '1'}">
+					<button type="submit" name="action" value="add">追加</button>
+					<button type="submit" name="action" value="delete">削除</button>
+				</span>
+			</td>
+		</tr>
+	</table>
+	<table width="80%" border="1">
+		<tr>
+			<td width="10%" >
+				<label>Check</label>
+			</td>
+			<td width="10%">
+				<label>No</label>
+			</td>
+			<td width="40%">
+				<label>金額</label>
+			</td>
+			<td width="40%">
+				<label>備考</label>
+			</td>
+		</tr>
+		<tr th:each="item, iter : *{costItems}">
+			<td>
+				<span th:if="${WorkTimeForm.readonly != '1'}">
+					<input type="checkbox"  th:field="*{costItems[__${iter.index}__].checkbox}" />
+				</span>
+			</td>
+			<td>
+				<span th:if="${WorkTimeForm.readonly != '1'}">
+					<input type="text" th:field="*{costItems[__${iter.index}__].LineNo}" />
+				</span>
+				<span th:if="${WorkTimeForm.readonly == '1'}">
+					<div th:text="*{costItems[__${iter.index}__].LineNo}"></div>
+				</span>
+			</td>
+			<td  ALIGN="right">
+				<span th:if="${WorkTimeForm.readonly != '1'}">
+					<input type="text" th:field="*{costItems[__${iter.index}__].cost}" />
+				</span>
+				<span th:if="${WorkTimeForm.readonly == '1'}">
+					<div th:text="*{costItems[__${iter.index}__].cost}"></div>
+				</span>
+			</td>
+			<td>
+				<span th:if="${WorkTimeForm.readonly != '1'}">
+					<input type="text" th:field="*{costItems[__${iter.index}__].comment}" size="80"/>
+				</span>
+				<span th:if="${WorkTimeForm.readonly == '1'}">
+					<div th:text="*{costItems[__${iter.index}__].comment}"></div>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				合計
+			</td>
+			<td ALIGN="right">
+				<span th:text="${sum}"></span>
+			</td>
+			<td>
+			</td>
+		</tr>
+	</table>
+
+	<input type="hidden" th:field="*{msg}" />
+	<input type="hidden" th:field="*{workscheduleFlg}" />
+	<input type="hidden" th:field="*{fileName}" />
+	<input type="hidden" th:field="*{mineType}" />
+	<input type="hidden" th:field="*{data}" />
+	<span th:if="${WorkTimeForm.readonly != '1'}">
+		<button type="submit" name="action" value="send">送信</button>
+	</span>
+	</DIV>
+</form>
+</body>
+</html>
